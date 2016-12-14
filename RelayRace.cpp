@@ -16,6 +16,8 @@ void RelayRace::waitLaunchSignal() {
 
 void RelayRace::sendReachSignal() {
 	wifi->sendToClient(LEADER_ID, "FINISH");
+
+	wifi->endBRCClient();
 	return;
 }
 
@@ -34,6 +36,8 @@ void RelayRace::sendFinishSignal() {
 		.type = MSG_ROUND_COMPELETE
 	};
 	while(!wifi->sendMessage(&msg));
+
+	wifi->endBRCClient();
 }
 
 void RelayRace::activeCar() {
