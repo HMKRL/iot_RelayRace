@@ -14,6 +14,20 @@ void RelayRace::waitLaunchSignal() {
 	}
 }
 
+void RelayRace::askRFID(uint8_t *sn) {
+	CommMsg msg;
+	msg.type = MSG_REQUEST_RFID;
+	for (int i = 0; i < 4; i++) {
+		msg.buffer[i] = sn[i];
+	}
+
+	wifi->sendMessage(&msg);
+}
+
+bool RelayRace::receiveMessage(CommMsg &msg) {
+	return wifi->receiveMessage(&msg);
+}
+
 void RelayRace::sendReachSignal() {
 	wifi->sendToClient(LEADER_ID, "FINISH");
 
@@ -33,7 +47,7 @@ void RelayRace::waitRoundStart() {
 
 void RelayRace::sendFinishSignal() {
 	CommMsg msg = {
-		.type = MSG_ROUND_COMPELETE
+		.type = MSG_ROUND_COMPLETE
 	};
 	while(!wifi->sendMessage(&msg));
 
