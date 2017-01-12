@@ -19,6 +19,7 @@ class RelayRace {
 		void sendReachSignal();
 		bool askRFID(uint8_t *sn, bool debug = false);
 		bool receiveMessage(CommMsg &msg);
+		bool dead();
 
 		/* ------------------------ */
 

@@ -9,6 +9,9 @@ void RelayRace::waitLaunchSignal() {
 	while(1) {
 		if(wifi->receiveMessage(&msg)) {
 			if(!strcmp(msg.buffer, "LIFT OFF")) return;
+			if(!strcmp(msg.buffer, "1") && ID == ID1) return;
+			if(!strcmp(msg.buffer, "2") && ID == ID2) return;
+			if(!strcmp(msg.buffer, "3") && ID == ID3) return;
 		}
 		delay(500);
 	}
@@ -80,6 +83,18 @@ void RelayRace::sendReachSignal() {
 	return;
 }
 
+bool RelayRace::dead() {
+	CommMsg msg;
+	if(wifi->receiveMessage(&msg)) {
+		if(((!strcmp(msg.buffer, "K1") && ID == ID1) || (!strcmp(msg.buffer, "K2") && ID == ID2)) || ((!strcmp(msg.buffer, "K3") && ID == ID3) || (!strcmp(msg.buffer, "K4") && ID == LEADER_ID))) {
+			wifi->complete();
+			wifi->endBRCClient();
+			return true;
+		}
+	}
+	return false;
+}
+
 void RelayRace::waitRoundStart() {
 	CommMsg msg;
 	while(1) {
@@ -109,6 +124,7 @@ void RelayRace::waitCarFinish() {
 	while(1) {
 		if(wifi->receiveMessage(&msg)) {
 			if(!strcmp(msg.buffer, "FINISH")) return;
+			if(!strcmp(msg.buffer, "4") && ID == LEADER_ID) return;
 		}
 		delay(500);
 	}
