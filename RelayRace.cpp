@@ -25,7 +25,12 @@ bool RelayRace::askRFID(uint8_t *sn, bool debug) {
 
 	wifi->receiveMessage(&msg);
 
-	if(debug) return true;
+	if(debug) {
+		wifi->complete();
+		this->sendReachSignal();
+
+		return true;
+	}
 
 	if(ID == ID1 && msg.buffer[6] == MAP_PARK_1) {
 		wifi->complete();
