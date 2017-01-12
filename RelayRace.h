@@ -17,7 +17,7 @@ class RelayRace {
 		/* Methods for group member */
 		void waitLaunchSignal();
 		void sendReachSignal();
-		bool askRFID(uint8_t *sn);
+		bool askRFID(uint8_t *sn, bool debug = false);
 		bool receiveMessage(CommMsg &msg);
 
 		/* ------------------------ */

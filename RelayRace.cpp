@@ -14,7 +14,7 @@ void RelayRace::waitLaunchSignal() {
 	}
 }
 
-bool RelayRace::askRFID(uint8_t *sn) {
+bool RelayRace::askRFID(uint8_t *sn, bool debug) {
 	CommMsg msg;
 	msg.type = MSG_REQUEST_RFID;
 	for (int i = 0; i < 4; i++) {
@@ -24,6 +24,8 @@ bool RelayRace::askRFID(uint8_t *sn) {
 	wifi->sendMessage(&msg);
 
 	wifi->receiveMessage(&msg);
+
+	if(debug) return true;
 
 	if(ID == ID1 && msg.buffer[6] == MAP_PARK_1) {
 		wifi->complete();
