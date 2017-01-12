@@ -27,26 +27,37 @@ bool RelayRace::askRFID(uint8_t *sn, bool debug) {
 
 	if(debug) {
 		wifi->complete();
-		this->sendReachSignal();
+		wifi->sendToClient(LEADER_ID, "FINISH");
+
+		wifi->endBRCClient();
 
 		return true;
 	}
 
 	if(ID == ID1 && msg.buffer[6] == MAP_PARK_1) {
 		wifi->complete();
-		this->sendReachSignal();
+		wifi->sendToClient(LEADER_ID, "FINISH");
+
+		wifi->endBRCClient();
+
 		return true;
 	}
 
 	if(ID == ID2 && msg.buffer[6] == MAP_PARK_2) {
 		wifi->complete();
-		this->sendReachSignal();
+		wifi->sendToClient(LEADER_ID, "FINISH");
+
+		wifi->endBRCClient();
+
 		return true;
 	}
 
 	if(ID == ID3 && msg.buffer[6] == MAP_PARK_3) {
 		wifi->complete();
-		this->sendReachSignal();
+		wifi->sendToClient(LEADER_ID, "FINISH");
+
+		wifi->endBRCClient();
+
 		return true;
 	}
 
