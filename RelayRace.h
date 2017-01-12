@@ -10,14 +10,14 @@
 class RelayRace {
 	public:
 		RelayRace(BRCClient *comm, char ID)
-			:wifi(comm), cnt(0), ID(ID), members {ID1, ID2, ID3} {}
+			:wifi(comm), cnt(0), ID(ID), members {ID1, ID2, ID3}, park{MAP_PARK_1, MAP_PARK_2, MAP_PARK_3, MAP_PARK_4} {}
 		
 		bool registerID();
 
 		/* Methods for group member */
 		void waitLaunchSignal();
 		void sendReachSignal();
-		void askRFID(uint8_t *sn);
+		bool askRFID(uint8_t *sn);
 		bool receiveMessage(CommMsg &msg);
 
 		/* ------------------------ */
@@ -25,7 +25,7 @@ class RelayRace {
 		/* Method for leader car */
 		void waitRoundStart();
 		void sendFinishSignal();
-		void activeCar();
+		void activeCar(char);
 		void waitCarFinish();
 		/* --------------------- */
 	private:
@@ -33,4 +33,5 @@ class RelayRace {
 		int cnt;
 		char ID;
 		char members[3];
+		char park[4];
 };

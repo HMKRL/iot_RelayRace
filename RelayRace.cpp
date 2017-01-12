@@ -14,7 +14,7 @@ void RelayRace::waitLaunchSignal() {
 	}
 }
 
-void RelayRace::askRFID(uint8_t *sn) {
+bool RelayRace::askRFID(uint8_t *sn) {
 	CommMsg msg;
 	msg.type = MSG_REQUEST_RFID;
 	for (int i = 0; i < 4; i++) {
@@ -22,6 +22,33 @@ void RelayRace::askRFID(uint8_t *sn) {
 	}
 
 	wifi->sendMessage(&msg);
+
+	wifi->receiveMessage(&msg);
+
+	if(ID == ID1 && msg.buffer[6] == MAP_PARK_1) {
+		wifi->complete();
+		this->sendReachSignal();
+		return true;
+	}
+
+	if(ID == ID2 && msg.buffer[6] == MAP_PARK_2) {
+		wifi->complete();
+		this->sendReachSignal();
+		return true;
+	}
+
+	if(ID == ID3 && msg.buffer[6] == MAP_PARK_3) {
+		wifi->complete();
+		this->sendReachSignal();
+		return true;
+	}
+
+	if(ID == LEADER_ID && msg.buffer[6] == MAP_PARK_4) {
+		wifi->complete();
+		return true;
+	}
+
+	return false;
 }
 
 bool RelayRace::receiveMessage(CommMsg &msg) {
@@ -40,6 +67,7 @@ void RelayRace::waitRoundStart() {
 	while(1) {
 		if(wifi->receiveMessage(&msg)) {
 			if(msg.type == MSG_ROUND_START) return;
+			if(!strcmp(msg.buffer, "START")) return;
 		}
 		delay(500);
 	}
@@ -54,8 +82,8 @@ void RelayRace::sendFinishSignal() {
 	wifi->endBRCClient();
 }
 
-void RelayRace::activeCar() {
-	wifi->sendToClient(members[cnt], "LIFT OFF");
+void RelayRace::activeCar(char ID) {
+	wifi->sendToClient(ID, "LIFT OFF");
 }
 
 void RelayRace::waitCarFinish() {
