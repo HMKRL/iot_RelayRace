@@ -43,7 +43,7 @@ bool RelayRace::askRFID(uint8_t *sn, bool debug) {
 		return true;
 	}
 
-	if(ID == ID2 && msg.buffer[6] == MAP_PARK_2) {
+	if(ID == ID2 && msg.buffer[6] == MAP_PARK_4) {
 		wifi->complete();
 		wifi->sendToClient(LEADER_ID, "FINISH");
 
@@ -61,7 +61,7 @@ bool RelayRace::askRFID(uint8_t *sn, bool debug) {
 		return true;
 	}
 
-	if(ID == LEADER_ID && msg.buffer[6] == MAP_PARK_4) {
+	if(ID == LEADER_ID && msg.buffer[6] == MAP_PARK_2) {
 		wifi->complete();
 		return true;
 	}
